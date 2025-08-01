@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='./style.css')}}">
+    <title>Image Classifier</title>
+</head>
+<body>
+    <div id="container">
+        <h3>Image Classifier</h3>
+        <form enctype="multipart/form-data" id="uploadForm">
+            <div id="input_box">
+                <span id="get_image"><input type="file" name="input_image" id="input_image" accept="image/*" required></span>
+                <br>
+                <button type="submit" id="submit_image">Upload</button>
+            </div>
+        </form>
+
+        <div id="result">
+
+        </div>
+
+    </div>
+
+    <script>
+        const form = document.getElementById("uploadForm");
+        const resultDiv = document.getElementById("result");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+
+            const data = await response.json(); 
+
+            const img = document.createElement("img");
+            img.src = `/static/uploads/${data.image_name}`;
+            img.alt = "Uploaded Image";
+            img.width = 300;
+
+            resultDiv.innerHTML = "";
+            const label = document.createElement("h5");
+            const confidence = document.createElement("h5");
+            label.textContent = "Classified as a " + data.result["Predicted"];
+            confidence.textContent = "Confidence : " + data.result["Confidence"];
+
+            resultDiv.appendChild(img);
+            resultDiv.appendChild(label);
+            resultDiv.appendChild(confidence);
+        });
+    </script>
+</body>
+</html>
