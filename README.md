@@ -39,3 +39,5 @@ pip install -r requirements.txt
 python app.py
 
 Then open http://127.0.0.1:5000 in your browser.
+
+🔗 [Download model.h5] - https://drive.google.com/drive/folders/1H_dmNfNNSNLV1927EOPoIaqNHGvvNfcF?usp=sharing
